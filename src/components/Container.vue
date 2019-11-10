@@ -9,7 +9,7 @@
         <button
           @click="changeToCourse"
           id="profile-button"
-          clas="static"
+          class="static"
           :class="{active: isActive, pill:true}"
         >Profile</button>
         <button

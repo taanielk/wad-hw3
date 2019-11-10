@@ -12,7 +12,7 @@
         </ul>
       </div>
       <div id="gpa">
-        <strong>2.75</strong>
+        <strong>{{this.gpa}}</strong>
       </div>
       <div class="clear-fix"></div>
     </div>
@@ -21,7 +21,18 @@
 
 <script>
 export default {
-  name: "Profile"
+  name: "Profile",
+  data() {
+    return{
+      gpa: 0
+    }
+  },
+  mounted() {
+    this.$root.$on('gpa', gpa => {
+        // console.log(data);
+        this.gpa = gpa;
+    });
+}
 };
 </script>
 

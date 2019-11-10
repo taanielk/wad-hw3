@@ -11,35 +11,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Agile software development</td>
-          <td>1</td>
-          <td>82</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>System modeling</td>
-          <td>1</td>
-          <td>85</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Object-oriented programming</td>
-          <td>2</td>
-          <td>99</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Estonian language Level A2</td>
-          <td>2</td>
-          <td>65</td>
-        </tr>
+        <tr v-for="course in coursesData" :key="course.id">
+          <td> {{course.id}}</td>
+          <td> {{course.name}}</td>
+          <td> {{course.semester}}</td>
+          <td> {{course.grade}}</td>
+        </tr>	
       </tbody>
     </table>
     <br />
     <br />
-    <Add />
+    <Add @course="addCourse"/>
   </div>
 </template>
 
@@ -49,6 +31,72 @@ export default {
   name: "Courses",
   components: {
     Add
+  },
+  data() {   
+    return {
+      coursesData: [
+        {
+          id: 1,
+          name: "Agile software development",
+          semester: 1,
+          grade: 82
+        },
+        {
+          id: 2,
+          name: "System modeling",
+          semester: 1,
+          grade: 85
+        },
+        {
+          id: 3,
+          name: "Object-oriented programming",
+          semester: 1,
+          grade: 99
+        },
+        {
+          id: 4,
+          name: "Estonian language Level A2",
+          semester: 2,
+          grade: 65
+        }
+      ]
+    }
+  },
+  mounted: function() {
+    this.$nextTick(function () {
+    this.calcGPA();
+  })
+  },
+  methods: {
+    addCourse: function(course) {
+      course.id = this.coursesData.length + 1;
+      this.coursesData.push(course);
+      this.calcGPA();
+    },
+    calcGPA: function() {
+      var sum = 0;
+        var count = 0
+        this.coursesData.forEach(e => {
+            count +=1;
+            var grade = e.grade;
+            if (grade > 90) {
+                sum +=4;
+            }
+            else if (grade > 80 && grade <=90) {
+                sum +=3;
+            }
+            else if (grade > 70 && grade <=80) {
+                sum +=2;
+            }
+            else if (grade > 60 && grade <=70) {
+                sum +=1;
+            }
+            else if (grade > 50 && grade <=60) {
+                sum +=0.5;
+            }
+        });
+        this.$root.$emit('gpa', sum/count);
+    }
   }
 };
 </script>>
